@@ -1,6 +1,6 @@
 variable "project_name" {
   description = "Project Name - will prefex all generated AWS resource names"
-#  default = "<PROJECT_NAME>"
+  default = "CP-TGW"
 }
 
 
@@ -9,18 +9,19 @@ variable "project_name" {
 ######################################
 
 provider "aws" {
-  shared_credentials_file = "~/.aws/credentials"
+#  shared_credentials_file = "~/.aws/credentials"
+#  shared_credentials_file = "%USERPROFILE%\.aws\credentials"
   /*
       Shared credential files is a text file with the following format:
         [<PROFILE>]
         aws_access_key_id = <ACCESS_KEY_ID>
         aws_secret_access_key = <SECRETE_ACCESS_KEY
   */
-  profile = "default"
+  profile = "rich 777916771162"
   region  = "${var.region}"
 }
 variable "region" {
-  default = "eu-west-1"
+  default = "ap-southeast-2"
 }
 
 
@@ -29,7 +30,7 @@ data "aws_availability_zones" "azs" {}
 # Private key
 variable "key_name" {
   description = "Must be the name of an existing EC2 KeyPair"
-#  default = "<KEY>"
+  default = "azure_pub_key"
 }
 
 #########################################
@@ -79,7 +80,7 @@ variable "spoke_1_high_port" {
 # (Optional) You can instead SSH into the server and run (from clish): 'set user admin password', fowlloed by 'save config'
 variable "password_hash" {
   description = "Hashed password for the Check Point servers - this parameter is optional"
-  default     = "$1$5TS.pCHG$y5ych7v24PHIzNpBYuioB0"
+  default     = "$1$8SfURQQf$dXRtRJQX8cFPg25NTqv9T0"
 }
 
 # SIC key
@@ -94,7 +95,7 @@ variable "version" {
 }
 
 variable "management_server_size" {
-  default = "m5.xlarge"
+  default = "m5.large"
 }
 
 variable "outbound_asg_server_size" {
@@ -126,4 +127,12 @@ variable "inbound_configuration_template_name" {
 variable "vpn_community_name" {
   description = "The name of the VPN Community used by the TGW ASG"
   default     = "tgw-community"  
+}
+variable "externaldnshost" {
+  description = "The name of the website"
+  default     = "www"  
+}
+variable "r53zone" {
+  description = "The name of the domiain used"
+  default     = "mycloudguard.net"  
 }

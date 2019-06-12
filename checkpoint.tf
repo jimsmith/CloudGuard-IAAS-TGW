@@ -67,8 +67,8 @@ resource "aws_cloudformation_stack" "checkpoint_tgw_cloudformation_stack" {
     GatewaysAddresses                           = "${var.outbound_cidr_vpc}"
     GatewayManagement                           = "Locally managed"
     GatewaysInstanceType                        = "${var.outbound_asg_server_size}"
-    GatewaysMinSize                             = "2"
-    GatewaysMaxSize                             = "5"
+    GatewaysMinSize                             = "1"
+    GatewaysMaxSize                             = "2"
     GatewaysBlades                              = "On"
     GatewaysLicense                             = "${var.version}-BYOL"
     GatewaysPasswordHash                        = "${var.password_hash}"
@@ -99,8 +99,8 @@ resource "aws_cloudformation_stack" "checkpoint_inbound_asg_cloudformation_stack
     VPC                                         = "${aws_vpc.inbound_vpc.id}"
     Subnets                                     = "${join(",",aws_subnet.inbound_subnet.*.id)}"
     ControlGatewayOverPrivateOrPublicAddress    = "private"
-    MinSize                                     = 2
-    MaxSize                                     = 5
+    MinSize                                     = 1
+    MaxSize                                     = 2
     ManagementServer                            = "${var.template_management_server_name}"
     ConfigurationTemplate                       = "${var.inbound_configuration_template_name}"
     Name                                        = "${var.project_name}-CheckPoint-Inbound-ASG"
@@ -155,7 +155,7 @@ resource "aws_lb_target_group" "external_lb_target_group" {
 resource "aws_lb" "internal_aws_lb" {
   name               = "${var.project_name}-Internal-NLB"
   internal           = true
-  load_balancer_type = "network"
+  load_balancer_type = "application"
   subnets            = ["${aws_subnet.spoke_1_external_subnet.*.id}"]
 
   tags = {
